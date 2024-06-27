@@ -1,9 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advance/firebase_options.dart';
+import 'package:flutter_advance/screens/auth_screen.dart';
 import 'package:flutter_advance/screens/database_screen.dart';
 import 'package:flutter_advance/screens/employee_screen.dart';
 import 'package:flutter_advance/screens/home_screen.dart';
 import 'package:flutter_advance/screens/network_screen.dart';
+import 'package:flutter_advance/screens/splash_screen.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 
@@ -12,6 +16,7 @@ void main() async {
   await EasyLocalization.ensureInitialized();
   await Hive.initFlutter();
   await Hive.openBox('local');
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(EasyLocalization(
     supportedLocales: const [
       Locale('en', 'US'),
@@ -38,7 +43,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
       locale: context.locale,
-      home: const HomeScreen(),
+      home: const AuthScreen(),
       routes: {
         DatabaseScreen.id: (context) => const DatabaseScreen(),
         NetworkScreen.id: (context) => const NetworkScreen(),

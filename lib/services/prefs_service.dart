@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../model/user_model.dart';
+import '../model/member_model.dart';
 
 class PrefsService {
   static storeName(String name) async {
@@ -20,18 +20,18 @@ class PrefsService {
     return prefs.remove('name');
   }
 
-  static setUser(UserModel model) async {
+  static setUser(MemberModel model) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String stringUser = jsonEncode(model);
     prefs.setString('user', stringUser);
   }
 
-  static Future<UserModel?> loadUser() async {
+  static Future<MemberModel?> loadUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? stringUser = prefs.getString('user');
     if (stringUser == null || stringUser.isEmpty) return null;
 
     Map<String, dynamic> map = jsonDecode(stringUser);
-    return UserModel.fromJson(map);
+    return MemberModel.fromJson(map);
   }
 }

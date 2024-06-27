@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advance/model/post_model.dart';
-import 'package:flutter_advance/model/user_model.dart';
+import 'package:flutter_advance/model/member_model.dart';
 import 'package:flutter_advance/screens/database_screen.dart';
 import 'package:flutter_advance/screens/employee_screen.dart';
 import 'package:flutter_advance/screens/login_screen.dart';

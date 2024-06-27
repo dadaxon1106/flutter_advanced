@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advance/model/user_model.dart';
+import 'package:flutter_advance/model/member_model.dart';
 import 'package:flutter_advance/services/hive_service.dart';
 import 'package:flutter_advance/services/log_service.dart';
 
@@ -19,7 +19,7 @@ class _DatabaseScreenState extends State<DatabaseScreen> {
   }
 
   init() {
-    var user = UserModel('John', 14343544, 6000000.0);
+    var user = MemberModel('John', 14343544, 6000000.0);
     HiveService.putUser(user);
     var result = HiveService.getUser();
     LogService.e(result.toJson().toString());

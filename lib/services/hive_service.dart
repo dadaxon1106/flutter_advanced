@@ -1,4 +1,4 @@
-import 'package:flutter_advance/model/user_model.dart';
+import 'package:flutter_advance/model/member_model.dart';
 import 'package:hive/hive.dart';
 
 class HiveService {
@@ -11,12 +11,12 @@ class HiveService {
     return box.get('name');
   }
 
-  static putUser(UserModel user) {
+  static putUser(MemberModel user) {
     box.put('user', user.toJson());
   }
 
-  static UserModel getUser() {
-    var map = UserModel.fromJson(box.get('user'));
+  static MemberModel getUser() {
+    var map = MemberModel.fromJson(box.get('user'));
     return map;
   }
 

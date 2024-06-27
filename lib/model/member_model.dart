@@ -1,10 +1,10 @@
-class UserModel {
+class MemberModel {
   String? name;
   int? cardNumber;
   double? balance;
-  UserModel(this.name, this.cardNumber, this.balance);
+  MemberModel(this.name, this.cardNumber, this.balance);
 
-  UserModel.fromJson(Map<String, dynamic> json) {
+  MemberModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     cardNumber = json['cardNumber'];
     balance = json['balance'];

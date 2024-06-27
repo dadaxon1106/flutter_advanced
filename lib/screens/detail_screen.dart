@@ -11,8 +11,23 @@ class DetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(employee.employeeName!),
+        title: Text("${employee.id}"),
       ),
-    );
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "Ishchi Ismi: ${employee.employeeName!}",
+              style: TextStyle(fontSize: 22, color: Colors.blueGrey),
+            ),
+            Text(
+              "Oyligi: ${employee.employeeSalary!} mln so'm",
+              style: TextStyle(fontSize: 18, color: Colors.red),
+            ),
+          ],
+        ),
+      ),
+    );  
   }
 }
