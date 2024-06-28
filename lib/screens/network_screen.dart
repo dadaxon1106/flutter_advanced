@@ -38,7 +38,7 @@ class _NetworkScreenState extends State<NetworkScreen> {
 
   _createPost() {
     var post =
-        Post(id: 101, title: 'HTTP', body: 'USING HTTP PACKAGE', userId: '0');
+        Post(id: "101", title: 'HTTP', body: 'USING HTTP PACKAGE', userId: '0');
     Network.POST(Network.API_CREATE, Network.paramsCreate(post))
         .then((response) => {LogService.i(response.toString())});
   }

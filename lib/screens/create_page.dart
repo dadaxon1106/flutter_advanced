@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_advance/model/notes_model.dart';
+import 'package:flutter_advance/screens/fc_service.dart';
 
 import '../model/post_model.dart';
 import '../services/auth_service.dart';
@@ -13,26 +17,35 @@ class CreatePage extends StatefulWidget {
 
 class _CreatePageState extends State<CreatePage> {
   var isLoading = false;
-  var titleController = TextEditingController();
+  var nameController = TextEditingController();
   var contentController = TextEditingController();
+  var dateController = TextEditingController();
+  var lastnameController = TextEditingController();
 
   _createPost() {
-    String title = titleController.text.trim();
-    String body = contentController.text.trim();
-    if (title.isEmpty || body.isEmpty) return;
+    String name = nameController.text.trim();
+    String content = contentController.text.trim();
+    String lastName = lastnameController.text.trim();
+    String date = dateController.text.trim();
+    if (name.isEmpty || content.isEmpty || lastName.isEmpty || date.isEmpty) {
+      return;
+    }
 
-    _apiCreatePost(title, body);
-    debugPrint("TITLE:$title,BODY:$body");
+    _apiCreatePost(name, lastName, content, date);
+    debugPrint("TITLE:$name,BODY:$lastName, Content:$date");
   }
 
-  _apiCreatePost(String title, String body) {
+  _apiCreatePost(String name, String lastName, String content, String data) {
     setState(() {
       isLoading = true;
     });
-    var post =
-        Post(title: title, body: body, userId: AuthService.currentUserId());
-    RtdbService.addPost(post).then((value) => {
-          debugPrint("TITLE:${post.title},"),
+    var notes = NotesModel(
+      name: name,
+      lastName: lastName,
+      date: data,
+      content: content,
+    );
+    FCService.create(dbPaht: 'posts', data: notes.toJson()).then((value) => {
           _resAddPost(),
         });
   }
@@ -58,15 +71,29 @@ class _CreatePageState extends State<CreatePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 TextField(
-                  controller: titleController,
-                  decoration: const InputDecoration(hintText: "Title"),
+                  controller: nameController,
+                  decoration: const InputDecoration(hintText: "Name"),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  controller: lastnameController,
+                  decoration: const InputDecoration(hintText: "LastName"),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  controller: dateController,
+                  decoration: const InputDecoration(hintText: "Date"),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 TextField(
                   controller: contentController,
-                  decoration: const InputDecoration(hintText: "Body"),
+                  decoration: const InputDecoration(hintText: "Content"),
                 ),
                 const SizedBox(
                   height: 10,

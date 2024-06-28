@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_advance/screens/home_screen.dart';
 import 'package:flutter_advance/screens/login_screen.dart';
+import 'package:flutter_advance/screens/main_page.dart';
 import 'package:flutter_advance/services/auth_service.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -37,7 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   void responseSignUp(User firebaseUser) {
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const HomeScreen()));
+        context, MaterialPageRoute(builder: (context) => const MainPage()));
   }
 
   @override

@@ -1,8 +1,13 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advance/model/notes_model.dart';
+import 'package:flutter_advance/screens/fc_service.dart';
 import 'package:flutter_advance/services/rtdb_service.dart';
+
 // import 'package:flutter_advanced/service/rtdb_service.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import '../model/post_model.dart';
+
 // import '../service/auth_service.dart';
 import '../services/auth_service.dart';
 import 'create_page.dart';
@@ -18,7 +23,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   bool isLoading = false;
-  List<Post> items = [];
+  List<DataSnapshot> items = [];
 
   Future _callCreatePage() async {
     Map results = await Navigator.of(context)
@@ -35,11 +40,12 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       isLoading = true;
     });
-    var list = await RtdbService.getPosts();
+    FCService.read(parentPath: 'posts').then((value) => {
+          items = value,
+          setState(() {}),
+        });
     items.clear();
     setState(() {
-      items = list;
-      items.reversed;
       isLoading = false;
     });
   }
@@ -62,6 +68,12 @@ class _MainPageState extends State<MainPage> {
             },
             icon: const Icon(Icons.exit_to_app),
           ),
+          IconButton(
+              onPressed: () async {
+                await RtdbService.deletePost();
+                _apiPostList();
+              },
+              icon: const Icon(Icons.delete))
         ],
       ),
       body: Stack(
@@ -69,7 +81,71 @@ class _MainPageState extends State<MainPage> {
           ListView.builder(
             itemCount: items.length,
             itemBuilder: (ctx, index) {
-              return itemOfPost(items[index]);
+              Map item = (items[index].value as Map);
+              return Slidable(
+                startActionPane: ActionPane(
+                  motion: const ScrollMotion(),
+                  dismissible: DismissiblePane(onDismissed: () {}),
+                  children: [
+                    SlidableAction(
+                      onPressed: (BuildContext context) {},
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      icon: Icons.edit,
+                      label: "Update",
+                    )
+                  ],
+                ),
+                endActionPane: ActionPane(
+                  motion: const ScrollMotion(),
+                  children: [
+                    SlidableAction(
+                      // An action can be bigger than the others.
+                      onPressed: (BuildContext context) {
+                        RtdbService.deletePost();
+                      },
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      icon: Icons.delete,
+                      label: 'Delete',
+                    ),
+                  ],
+                ),
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "${item['name']}, ${item['lastName']}",
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            "2024-06-07",
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            "${item['content']}",
+                            style: const TextStyle(
+                              color: Colors.grey,
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              );
             },
           ),
           isLoading
@@ -90,61 +166,68 @@ class _MainPageState extends State<MainPage> {
     );
   }
 
-  Widget itemOfPost(Post post) {
-    return Slidable(
-      startActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        dismissible: DismissiblePane(onDismissed: () {}),
-        children: [
-          SlidableAction(
-            onPressed: (BuildContext context) {},
-            backgroundColor: Colors.green,
-            foregroundColor: Colors.white,
-            icon: Icons.edit,
-            label: "Update",
-          )
-        ],
-      ),
-      endActionPane: ActionPane(
-        motion: const ScrollMotion(),
-        children: [
-          SlidableAction(
-            // An action can be bigger than the others.
-            onPressed: (BuildContext context) {
-              RtdbService.deletePost();
-            },
-            backgroundColor: Colors.red,
-            foregroundColor: Colors.white,
-            icon: Icons.delete,
-            label: 'Delete',
-          ),
-        ],
-      ),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        child: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  post.title!,
-                  style: const TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Text(
-                  post.body!,
-                  style: const TextStyle(
-                      color: Colors.black, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+// Widget itemOfPost(NotesModel notes) {
+//   return Slidable(
+//     startActionPane: ActionPane(
+//       motion: const ScrollMotion(),
+//       dismissible: DismissiblePane(onDismissed: () {}),
+//       children: [
+//         SlidableAction(
+//           onPressed: (BuildContext context) {},
+//           backgroundColor: Colors.green,
+//           foregroundColor: Colors.white,
+//           icon: Icons.edit,
+//           label: "Update",
+//         )
+//       ],
+//     ),
+//     endActionPane: ActionPane(
+//       motion: const ScrollMotion(),
+//       children: [
+//         SlidableAction(
+//           // An action can be bigger than the others.
+//           onPressed: (BuildContext context) {
+//             RtdbService.deletePost();
+//           },
+//           backgroundColor: Colors.red,
+//           foregroundColor: Colors.white,
+//           icon: Icons.delete,
+//           label: 'Delete',
+//         ),
+//       ],
+//     ),
+//     child: Container(
+//       padding: const EdgeInsets.all(20),
+//       child: Row(
+//         children: [
+//           Column(
+//             crossAxisAlignment: CrossAxisAlignment.start,
+//             children: [
+//               Text(
+//                 "${post.title} ${post.body}",
+//                 style: const TextStyle(
+//                     color: Colors.black, fontWeight: FontWeight.bold),
+//               ),
+//               const SizedBox(
+//                 height: 5,
+//               ),
+//               Text(
+//                 post.id.toString(),
+//                 style: const TextStyle(
+//                     color: Colors.black, fontWeight: FontWeight.bold),
+//               ),
+//               const SizedBox(height: 6),
+//               Text(
+//                 post.img_url.toString(),
+//                 style: const TextStyle(
+//                   color: Colors.grey,
+//                 ),
+//               )
+//             ],
+//           ),
+//         ],
+//       ),
+//     ),
+//   );
+// }
 }

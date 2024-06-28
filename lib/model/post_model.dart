@@ -1,5 +1,5 @@
 class Post {
-  int? id;
+  String? id;
   String? title;
   String? body;
   String? img_url;
