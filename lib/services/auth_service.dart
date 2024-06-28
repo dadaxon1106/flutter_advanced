@@ -19,6 +19,11 @@ class AuthService {
     return firebaseUser;
   }
 
+  static String currentUserId() {
+    final User? firebaseUser = _auth.currentUser;
+    return firebaseUser!.uid;
+  }
+
   static Future<User?> signUpUser(
       String fullName, String email, String password) async {
     var userResult = await _auth.createUserWithEmailAndPassword(
@@ -30,6 +35,6 @@ class AuthService {
   static void logOut(BuildContext context) {
     _auth.signOut();
     Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => const SignInScreen()));
+        context, MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 }

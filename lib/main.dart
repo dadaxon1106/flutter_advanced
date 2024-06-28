@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       supportedLocales: context.supportedLocales,
       localizationsDelegates: context.localizationDelegates,
       locale: context.locale,
-      home: const AuthScreen(),
+      home: const SplashScreen(),
       routes: {
         DatabaseScreen.id: (context) => const DatabaseScreen(),
         NetworkScreen.id: (context) => const NetworkScreen(),

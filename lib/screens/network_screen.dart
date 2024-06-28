@@ -38,7 +38,7 @@ class _NetworkScreenState extends State<NetworkScreen> {
 
   _createPost() {
     var post =
-        Post(id: 101, title: 'HTTP', body: 'USING HTTP PACKAGE', userId: 1);
+        Post(id: 101, title: 'HTTP', body: 'USING HTTP PACKAGE', userId: '0');
     Network.POST(Network.API_CREATE, Network.paramsCreate(post))
         .then((response) => {LogService.i(response.toString())});
   }
@@ -69,11 +69,11 @@ class _NetworkScreenState extends State<NetworkScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            post.title,
+            post.title!,
             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
-          Text(post.body),
+          Text(post.body!),
         ],
       ),
     );

@@ -55,8 +55,8 @@ class Network {
     Map<String, String> map = {};
     map.addAll({
       'userId': post.userId.toString(),
-      'title': post.title,
-      'body': post.body
+      'title': post.title!,
+      'body': post.body!
     });
     return map;
   }
@@ -65,8 +65,8 @@ class Network {
     Map<String, String> map = {};
     map.addAll({
       'id': post.id.toString(),
-      'title': post.title,
-      'body': post.body,
+      'title': post.title!,
+      'body': post.body!,
       'userId': post.userId.toString()
     });
     return map;
